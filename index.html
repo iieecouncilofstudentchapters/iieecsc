@@ -151,6 +151,33 @@ body.light-mode .nav-links a {
   color: #111;
 }
 
+@media (max-width: 768px) {
+
+  .about {
+    margin: 15px; /* bawas margin */
+    padding: 25px 15px;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr; /* 1 column */
+  }
+
+  .about-card {
+    padding: 18px;
+  }
+
+  .about-card p,
+  .about-card li {
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: justify;
+  }
+
+  .about h2 {
+    font-size: 22px;
+  }
+
+}
 /* DROPDOWN */
 .dropdown {
   position: relative;
@@ -467,6 +494,39 @@ body.light-mode {
 body.light-mode .navbar {
   background: rgba(255,255,255,0.7);
 }
+
+@media (max-width: 768px) {
+
+  .about {
+    margin: 15px;
+    padding: 25px 15px;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-card {
+    padding: 18px;
+  }
+
+  .about-card p,
+  .about-card li {
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: justify;
+  }
+
+  .about h2 {
+    font-size: 22px;
+  }
+
+  .about-card {
+  word-wrap: break-word;
+}
+
+}
+
 </style>
 </head>
 
