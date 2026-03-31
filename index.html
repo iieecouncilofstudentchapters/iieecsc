@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>IIEE - CSC</title>
+<link rel="icon" type="image/png" href="csc.png">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
@@ -22,7 +23,7 @@ body {
   padding-top: 110px;
 }
 
-/* NAVBAR */
+/* NAVIGATION BAR */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -55,7 +56,7 @@ body {
   line-height: 1.2;
 }
 
-/* NAV LINKS */
+/* NAVIGATION LINKS */
 .nav-links {
   display: flex;
   gap: 25px;
@@ -67,13 +68,13 @@ body {
   font-size: 14px;
   cursor: pointer;
 }
-/* UNDERLINE NAV EFFECT */
+/* UNDERLINE NAVIGATION EFFECT */
 .nav-links a {
   position: relative;
   padding: 5px 10px;
 }
 
-/* hidden underline */
+/* HIDDEN UNDERLINE */
 .nav-links a::after {
   content: "";
   position: absolute;
@@ -85,7 +86,7 @@ body {
   transition: 0.3s ease;
 }
 
-/* hover animation */
+/* HOVER ANIMATION */
 .nav-links a:hover::after {
   width: 100%;
 }
@@ -95,7 +96,6 @@ body {
   width: 100%;
 }
 
-/* FIX: remove white box sa desktop, only apply sa mobile */
 @media (max-width: 768px) {
   body.light-mode .nav-links {
     background: rgba(255,255,255,0.95);
@@ -103,11 +103,11 @@ body {
 }
 
 .about {
-  padding: 40px 20px; /* reduce side padding */
+  padding: 40px 20px;
 }
 
 .about h2 {
-  font-size: 26px; /* smaller heading */
+  font-size: 26px;
 }
 
 .about p {
@@ -116,14 +116,13 @@ body {
 }
 
 .about-grid {
-  grid-template-columns: 1fr; /* force single column */
+  grid-template-columns: 1fr;
 }
 
 .about-card {
   padding: 18px;
 }
 
-/* IMPORTANT: fix long text wrapping */
 .about-card ul {
   padding-left: 18px;
   word-wrap: break-word;
@@ -135,23 +134,19 @@ body {
   line-height: 1.5;
 }
 
-/* prevent ANY horizontal scroll */
 body {
   overflow-x: hidden;
 }
 
-/* CLEAN HOVER EFFECT */
 .nav-links a:hover {
   opacity: 0.7;
   transition: 0.3s;
 }
 
-/* OPTIONAL: mas smooth dropdown look */
 .dropdown-content {
   transition: all 0.3s ease;
 }
 
-/* LIGHT MODE FIX */
 body.light-mode .nav-links a {
   color: #111;
 }
@@ -175,10 +170,9 @@ body.light-mode .nav-links a {
   z-index: 1000;
 }
 
-/* MOBILE FIX */
 @media (max-width: 768px) {
   .dropdown-content {
-    position: static; /* KEY FIX */
+    position: static;
     background: transparent;
     padding: 5px 0;
   }
@@ -201,7 +195,7 @@ body.light-mode .nav-links a {
 .dropdown.active .dropdown-content {
   display: flex;
 }
-/* COMPACT CONTACT SECTION */
+
 #contact {
   padding: 30px 20px;
   max-width: 600px;
@@ -253,7 +247,7 @@ body.light-mode .announcement {
   color: #111;
 }
 
-/* DROPDOWN FIX (VISIBLE BOTH MODES) */
+/* DROPDOWN (VISIBLE BOTH MODES) */
 .dropdown-content {
   background: rgba(0,0,0,0.85);
 }
@@ -266,7 +260,7 @@ body.light-mode .dropdown-content a {
   color: #111;
 }
 
-/* GLASS NAVBAR EFFECT ON SCROLL */
+/* GLASS NAVBAR EFFECT */
 .navbar.scrolled {
   background: rgba(0,0,0,0.4);
   backdrop-filter: blur(20px);
@@ -378,16 +372,15 @@ body.light-mode .navbar.scrolled {
 
 .pdf-container iframe {
   width: 100%;
-  height: 80vh; /* adaptive height */
+  height: 80vh;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
-/* allow zoom gestures */
+
 .pdf-container iframe {
   touch-action: auto;
 }
 
-/* ADVANCED ANIMATED BACKGROUND */
 body::before {
   content: "";
   position: fixed;
@@ -431,7 +424,6 @@ body.light-mode .announcement {
   color: #111;
 }
 
-/* FOOTER */
 footer {
   text-align: center;
   margin-top: 40px;
@@ -439,7 +431,6 @@ footer {
   opacity: 0.7;
 }
 
-/* MOBILE */
 @media (max-width: 768px) {
   .hamburger { display: block; }
 
@@ -458,7 +449,6 @@ footer {
   .nav-links.show { display: flex; }
 }
 
-/* LIGHT MODE */
 body.light-mode {
   background: #f5f7ff;
   color: #111;
@@ -518,7 +508,6 @@ body.light-mode .navbar {
   <p>Committed to serve and cultivate future Electrical Engineers</p>
 </section>
 
-<!-- ANNOUNCEMENT -->
 <section class="announcement" id="announcement">
   <h2>ANNOUNCEMENTS</h2>
   <p>
@@ -528,7 +517,6 @@ body.light-mode .navbar {
   </p>
 </section>
 
-<!-- ORIGINAL ABOUT (UNCHANGED) -->
 <section class="about" id="about">
 
   <div class="about-header">
@@ -560,7 +548,7 @@ body.light-mode .navbar {
     <div class="about-card">
       <h3>OUR PURPOSE</h3>
       <ul>
-         <li><strong>The IIEE-CSC shall at all times:</strong></li>
+        The IIEE-CSC shall at all times:
         <li>Provide students with beneficial opportunities participate in relevant academic, professional, networking, and cultural activities;</li>
         <li>Energize student interest, awareness, and understanding of the duties and responsibilities of an electrical engineering student and imbibe them with desirable motivations and correct values;</li>
         <li>Formulate and adopt policies, measures, and programs with the view of fostering the educational advancement In the field of electricity;</li>
@@ -572,7 +560,6 @@ body.light-mode .navbar {
   </div>
 </section>
 
-<!-- MEMBERSHIP WITH PDF VIEW -->
 <section class="about" id="membership" style="display:none;">
 
   <div class="about-header">
@@ -627,7 +614,7 @@ function toggleMenu() {
 
 function hideAll() {
   document.getElementById("home").style.display = "none";
-  document.getElementById("announcement").style.display = "none"; // ✅ ADD THIS
+  document.getElementById("announcement").style.display = "none";
   document.getElementById("about").style.display = "none";
   document.getElementById("membership").style.display = "none";
   document.getElementById("officers").style.display = "none";
@@ -637,7 +624,7 @@ function hideAll() {
 function showHome() {
   hideAll();
   document.getElementById("home").style.display = "block";
-  document.getElementById("announcement").style.display = "block"; // ✅ ADD THIS
+  document.getElementById("announcement").style.display = "block";
 }
 
 function showAbout() {
@@ -677,11 +664,9 @@ document.addEventListener("click", function(event) {
   const nav = document.getElementById("navLinks");
   const hamburger = document.querySelector(".hamburger");
 
-  // check if click is OUTSIDE navbar
   if (!nav.contains(event.target) && !hamburger.contains(event.target)) {
     nav.classList.remove("show");
 
-    // also close dropdown if open
     document.querySelectorAll(".dropdown").forEach(d => d.classList.remove("active"));
   }
 });
