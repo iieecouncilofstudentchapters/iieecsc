@@ -327,6 +327,7 @@ body.light-mode .navbar.scrolled {
   100% { background-position: 0% 50%; }
 }
 
+
 /* ABOUT */
 .about {
   margin: 40px;
@@ -527,6 +528,27 @@ body.light-mode .navbar {
 
 }
 
+/* GLASS BUTTON */
+.glass-btn {
+  display: block;
+  margin: 10px auto;
+  padding: 12px 20px;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: white;
+  cursor: pointer;
+  transition: 0.3s ease;
+  width: 260px;
+  text-align: center;
+}
+
+.glass-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg,#00c6ff55,#7b2ff755);
+}
+
 </style>
 </head>
 
@@ -562,7 +584,14 @@ body.light-mode .navbar {
 
     <a onclick="showOfficers()">Officers</a>
 
-    <a onclick="showMembership()">Membership</a>
+    <div class="dropdown">
+  <a>Membership ▾</a>
+  <div class="dropdown-content">
+    <a onclick="showAccredited()">Accredited Student Chapters</a>
+    <a onclick="showAffiliated()">Affiliated Students</a>
+    <a onclick="showProcess()">Membership Process</a>
+  </div>
+</div>
 
     <a onclick="showContact()">Contact</a>
     <a onclick="toggleTheme()">🌓</a>
@@ -632,33 +661,16 @@ body.light-mode .navbar {
 
 <section class="about" id="membership" style="display:none;">
 
+  <!-- TITLE -->
   <div class="about-header">
-    <h2>IIEE-CSC AFFILIATED STUDENTS</h2>
+    <h2 id="membershipTitle">MEMBERSHIP</h2>
   </div>
 
-  <div class="pdf-container">
-    <iframe src="IIEE-CSC AFFILIATED STUDENTS.pdf#toolbar=1&zoom=page-width"></iframe>
-  </div>
+  <!-- REGION VIEW -->
+  <div id="regionView"></div>
 
-  <br>
-
-  <div class="about-header">
-    <h2>IIEE-CSC ACCREDITED STUDENT CHAPTERS</h2>
-  </div>
-
-  <div class="pdf-container">
-    <iframe src="IIEE-CSC ACCREDITED STUDENT CHAPTERS.pdf#toolbar=1&zoom=page-width"></iframe>
-  </div>
-
-  <br>
-  
-  <div class="about-header">
-    <h2>MEMBERSHIP PROCESS</h2>
-  </div>
-
-  <div class="pdf-container">
-    <iframe src="MEMBERSHIP PROCESS.pdf"></iframe>
-  </div>
+  <!-- PDF VIEW -->
+  <div id="pdfViewer"></div>
 
 </section>
 
@@ -755,6 +767,145 @@ document.querySelectorAll(".nav-links a").forEach(link => {
     document.getElementById("navLinks").classList.remove("show");
   });
 });
+
+function showAccredited() {
+  showMembership();
+  document.getElementById("membershipTitle").innerText = "ACCREDITED STUDENT CHAPTERS";
+
+  loadRegions("accredited");
+}
+
+function showAffiliated() {
+  showMembership();
+  document.getElementById("membershipTitle").innerText = "AFFILIATED STUDENTS";
+
+  loadRegions("affiliated");
+}
+
+function showProcess() {
+  showMembership();
+  document.getElementById("membershipTitle").innerText = "MEMBERSHIP PROCESS";
+
+  document.getElementById("regionView").innerHTML = "";
+  document.getElementById("pdfViewer").innerHTML = `
+    <div class="pdf-container">
+      <iframe src="MEMBERSHIP PROCESS.pdf"></iframe>
+    </div>
+  `;
+}
+
+/* LOAD REGIONS */
+function loadRegions(type) {
+  document.getElementById("pdfViewer").innerHTML = "";
+
+  const regions = [
+    "Northern Luzon",
+    "Central Luzon",
+    "Metro Manila",
+    "Southern Luzon",
+    "Bicol",
+    "Western Visayas",
+    "Central & Eastern Visayas",
+    "Northern Mindanao",
+    "Southern Mindanao",
+    "Western Mindanao"
+  ];
+
+  let html = "";
+
+  regions.forEach(region => {
+    html += `<button class="glass-btn" onclick="openRegion('${region}','${type}')">${region}</button>`;
+  });
+
+  document.getElementById("regionView").innerHTML = html;
+}
+
+/* REGION CLICK */
+function openRegion(region, type) {
+
+  document.getElementById("pdfViewer").innerHTML = "";
+
+  let html = "";
+
+  /* ACCREDITED → DIRECT PDF */
+  if (type === "accredited") {
+
+    let file = `${region}-accredited.pdf`;
+
+    document.getElementById("regionView").innerHTML = "";
+
+    document.getElementById("pdfViewer").innerHTML = `
+      <div class="pdf-container">
+        <iframe src="${file}#toolbar=1&zoom=page-width"></iframe>
+      </div>
+      <button class="glass-btn" onclick="loadRegions('${type}')">⬅ Back</button>
+    `;
+
+    return;
+  }
+
+  /* AFFILIATED → SHOW SCHOOLS */
+  const affiliatedData = {
+
+    "Northern Luzon": [
+      "ISABELA STATE UNIVERSITY",
+      "NUEVA VIZCAYA STATE UNIVERSITY",
+      "UNIVERSITY OF SAINT LOUIS",
+      "ALDERSGATE COLLEGE INC.",
+      "DON MARIANO MARCOS STATE UNIVERSITY",
+      "CAGAYAN STATE UNIVERSITY",
+      "KALINGA STATE UNIVERSITY"
+    ],
+
+    "Central Luzon": [
+      "HOLY ANGEL UNIVERSITY",
+      "PANGASINAN STATE UNIVERSITY",
+      "BULACAN STATE UNIVERSITY",
+      "TARLAC STATE UNIVERSITY"
+    ],
+
+    "Metro Manila": [
+      "ADAMSON UNIVERSITY",
+      "MAPUA UNIVERSITY",
+      "NATIONAL UNIVERSITY",
+      "UNIVERSITY OF SANTO TOMAS",
+      "PUP MANILA"
+    ]
+
+  };
+
+  html = "";
+
+  affiliatedData[region]?.forEach(school => {
+    html += `<button class="glass-btn" onclick="openSchool('${school}')">${school}</button>`;
+  });
+
+  html += `<button class="glass-btn" onclick="loadRegions('${type}')">⬅ Back</button>`;
+
+  document.getElementById("regionView").innerHTML = html;
+}
+
+/* PDF VIEW */
+function loadPDF(file) {
+  document.getElementById("pdfViewer").innerHTML = `
+    <div class="pdf-container">
+      <iframe src="${file}#toolbar=1&zoom=page-width"></iframe>
+    </div>
+  `;
+}
+
+function openSchool(school) {
+
+  document.getElementById("regionView").innerHTML = "";
+
+  document.getElementById("pdfViewer").innerHTML = `
+    <div class="pdf-container">
+      <iframe src="${school}.pdf#toolbar=1&zoom=page-width"></iframe>
+    </div>
+
+    <button class="glass-btn" onclick="showAffiliated()">⬅ Back</button>
+  `;
+}
 
 showHome();
 </script>
