@@ -7,8 +7,9 @@
 <link rel="icon" type="image/png" href="csc.png">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
+
 * {
   margin: 0;
   padding: 0;
@@ -85,6 +86,47 @@ body {
   background: #00c6ff;
   transition: 0.3s ease;
 }
+
+footer {
+  text-align: center;
+  margin-top: 50px;
+  padding: 30px 20px;
+  opacity: 0.8;
+}
+
+.footer-icons {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 15px;
+}
+
+.icon {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  color: white;
+  text-decoration: none;
+  transition: 0.3s ease;
+  font-size: 18px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.icon:hover {
+  transform: translateY(-4px);
+  background: rgba(0,198,255,0.25);
+}
+
+/* optional hover colors */
+.icon.fb:hover { background: #1877f2; }
+.icon.ig:hover { background: #e1306c; }
+.icon.email:hover { background: #ff7a00; }
+.icon.loc:hover { background: #00c6ff; }
 
 /* HOVER ANIMATION */
 .nav-links a:hover::after {
@@ -176,6 +218,12 @@ body.light-mode .nav-links a {
   .about h2 {
     font-size: 22px;
   }
+
+@media (max-width: 600px) {
+  #regionView {
+    grid-template-columns: 1fr;
+  }
+}
 
 }
 /* DROPDOWN */
@@ -540,13 +588,20 @@ body.light-mode .navbar {
   color: white;
   cursor: pointer;
   transition: 0.3s ease;
-  width: 260px;
+
+  width: 100%;        
+  max-width: 260px;   
   text-align: center;
 }
 
-.glass-btn:hover {
-  transform: scale(1.05);
-  background: linear-gradient(135deg,#00c6ff55,#7b2ff755);
+/* REGION / SCHOOL BUTTON CONTAINER */
+#regionView {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  justify-items: center;
+  align-items: stretch;
+  margin-top: 20px;
 }
 
 </style>
@@ -686,7 +741,27 @@ body.light-mode .navbar {
 </section>
 
 <footer>
-© 2026 | IIEE - Council of Student Chapters
+  <div class="footer-icons">
+
+    <a href="https://www.facebook.com/IIEECouncilofStudentChapters" target="_blank" class="icon fb">
+      <i class="fa-brands fa-facebook-f"></i>
+    </a>
+
+    <a href="https://www.instagram.com/iieecsc/" target="_blank" class="icon ig">
+      <i class="fa-brands fa-instagram"></i>
+    </a>
+
+    <a href="mailto:iiee.councilofstudentchapters@gmail.com" class="icon email">
+      <i class="fa-solid fa-envelope"></i>
+    </a>
+
+    <a href="https://maps.app.goo.gl/dLUW8YYQbKVKawJS7" target="_blank" class="icon loc">
+      <i class="fa-solid fa-location-dot"></i>
+    </a>
+
+  </div>
+
+  <p>© 2026 | IIEE - Council of Student Chapters</p>
 </footer>
 
 <script>
