@@ -332,6 +332,43 @@ body.light-mode .nav-links a {
   margin-bottom: 10px;
 }
 
+#themeToggle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(10px);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+#themeToggle i {
+  display: inline-block;
+  transition: .3s;
+}
+
+#themeToggle i {
+  transition: all 0.3s ease;
+}
+
+#themeToggle:hover i {
+  transform: rotate(20deg);
+}
+
+body.light-mode .hero h1,
+body.light-mode .hero p,
+body.light-mode .logo-text,
+body.light-mode footer,
+body.light-mode #contact,
+body.light-mode .glass-btn {
+  color: #000;
+}
+
 /* HAMBURGER */
 .hamburger {
   display: none;
@@ -420,6 +457,29 @@ body.light-mode .navbar.scrolled {
   100% { background-position: 0% 50%; }
 }
 
+body.light-mode .hero h1,
+body.light-mode .hero p {
+  color: #000;
+  text-shadow:
+    0 0 5px rgba(255,255,255,.8),
+    0 0 10px rgba(255,255,255,.6);
+}
+
+body.light-mode .logo-text {
+  color: #000;
+}
+
+body.light-mode .glass-btn {
+  color: #000;
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(0,0,0,.1);
+}
+
+body.light-mode footer,
+body.light-mode #contact {
+  color: #000;
+}
+
 
 /* ABOUT */
 .about {
@@ -473,22 +533,109 @@ body.light-mode .navbar.scrolled {
   padding: 25px;
   transition: all 0.4s ease;
   cursor: pointer;
-}
 
-.about-card p {
-  margin-bottom: 12px;
-  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
   text-align: center;
 }
 
-.about-card {
+.about-card h3 {
+  margin-bottom: 20px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-card p,
+.about-card li {
+  margin-bottom: 15px;
+  line-height: 1.8;
   text-align: center;
+}
+
+.about-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .about-card:hover {
   transform: translateY(-10px) scale(1.03);
   background: linear-gradient(135deg, #00c6ff55, #7b2ff755);
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+body.light-mode .about {
+  background: linear-gradient(
+    135deg,
+    rgba(0,78,146,.08),
+    rgba(0,159,253,.08),
+    rgba(44,83,100,.08)
+  );
+
+  border: 1px solid rgba(0,0,0,.08);
+}
+
+body.light-mode .about p,
+body.light-mode .about li,
+body.light-mode .about h2,
+body.light-mode .about h3 {
+  color: #111827;
+}
+
+body.light-mode .about-card {
+  background: rgba(255,255,255,0.85);
+  color: #111;
+  border: 1px solid rgba(0,0,0,.08);
+}
+
+body.light-mode .about-card:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(0,198,255,.15),
+    rgba(123,47,247,.15)
+  );
+}
+
+body.light-mode::before {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0,198,255,.12), transparent),
+    radial-gradient(circle at 80% 30%, rgba(123,47,247,.10), transparent),
+    radial-gradient(circle at 50% 80%, rgba(255,0,76,.08), transparent);
+}
+
+#themeToggle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(10px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: .3s;
+}
+
+#themeToggle:hover {
+  background: rgba(0,198,255,.2);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.about-card {
+  height: 100%;
 }
 
 /* PDF VIEWER */
@@ -722,7 +869,9 @@ body.light-mode .navbar {
 </div>
 
     <a onclick="showContact()">Contact</a>
-    <a onclick="toggleTheme()">🌓</a>
+    <a onclick="toggleTheme()" id="themeToggle">
+  <i class="fa-solid fa-moon"></i>
+</a>
   </div>
 </div>
 
@@ -766,24 +915,20 @@ body.light-mode .navbar {
 
     <div class="about-card">
       <h3>OUR MISSION</h3>
-      <ul>
         <p>To help in improving the academic performance of all Electrical Engineering (EE) and Electrical Technology (ET) students in the archipelago and to serve as a channel of information about current issues and trends in EE and ET education system and industry.</p>
         <p>To hone and nurture the leadership abilities, skills, and principles of student members in order to act with integrity and passion to serve as future leaders of the IIEE and its country.</p>
         <p>To foster unity among its members by acting as the core and prime mover for programs and activities that will provide opportunities for personal growth and self-development of its members.</p>
         <p>To encourage its members to support, participate, and undertake the challenges of globalization and social awareness.</p>
-      </ul>
     </div>
 
     <div class="about-card">
       <h3>OUR PURPOSE</h3>
-      <ul>
         The IIEE-CSC shall at all times:
         <p>Provide students with beneficial opportunities participate in relevant academic, professional, networking, and cultural activities;</p>
         <p>Energize student interest, awareness, and understanding of the duties and responsibilities of an electrical engineering student and imbibe them with desirable motivations and correct values;</p>
         <p>Formulate and adopt policies, measures, and programs with the view of fostering the educational advancement In the field of electricity;</p>
-        <p>Establish unity and closer cooperative relationships among students of different schools and between student-professional, and studentgraduate. and;</p>
+        <p>Establish unity and closer cooperative relationships among students of different schools and between student-professional, and studentgraduate, and;</p>
         <p>Defend, promote and protect the rights and welfare of the students.</p>
-      </ul>
     </div>
 
   </div>
@@ -880,7 +1025,16 @@ function showContact() {
 }
 
 function toggleTheme() {
+
   document.body.classList.toggle("light-mode");
+
+  const icon = document.querySelector("#themeToggle i");
+
+  if(document.body.classList.contains("light-mode")){
+    icon.className = "fa-solid fa-moon";
+  } else {
+    icon.className = "fa-solid fa-sun";
+  }
 }
 
 window.addEventListener("scroll", function() {
