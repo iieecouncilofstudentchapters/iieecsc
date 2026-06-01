@@ -138,6 +138,7 @@ footer {
   width: 100%;
 }
 
+
 @media (max-width: 768px) {
   body.light-mode .nav-links {
     background: rgba(255,255,255,0.95);
@@ -834,6 +835,111 @@ body.light-mode .navbar {
   margin-top: 20px;
 }
 
+.search-container {
+  position: sticky;
+  top: 90px; 
+  z-index: 1000; 
+  padding: 15px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.suggestions {
+  position: absolute;
+  top: calc(100% - 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  max-width: 90%;
+  background: rgba(15, 23, 42, 0.98);
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 1001;
+  display: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+.search-container input {
+  width: 500px;
+  max-width: 90%;
+  padding: 16px 24px;
+  border-radius: 50px; 
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  outline: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 16px;
+  transition: 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.search-container input:focus {
+  width: 550px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(0, 198, 255, 0.6);
+  box-shadow: 0 0 20px rgba(0, 198, 255, 0.3);
+}
+
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  max-width: 90%;
+  background: rgba(15, 23, 42, 0.95);
+  border-radius: 12px;
+  margin-top: 5px;
+  overflow: hidden;
+  z-index: 1001;
+  display: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.suggestions div {
+  padding: 12px 18px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+  text-align: left;
+}
+
+.suggestions div:hover {
+  background: rgba(0, 198, 255, 0.15);
+}
+
+.result-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 24px;
+  border-radius: 16px;
+  margin: 15px auto;
+  width: min(600px, 95%);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  transition: 0.3s ease;
+  text-align: center;
+}
+
+.result-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 198, 255, 0.4);
+}
+
+.result-card p {
+  margin: 6px 0 !important; 
+  font-size: 15px;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.result-card h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
 </style>
 </head>
 
@@ -874,6 +980,7 @@ body.light-mode .navbar {
   <div class="dropdown-content">
     <a onclick="showAffiliated()">Affiliated Students</a>
     <a onclick="showProcess()">Membership Process</a>
+    <a onclick="showVerification()">Membership Verification</a>
   </div>
 </div>
 
@@ -969,6 +1076,31 @@ body.light-mode .navbar {
   <p>Facebook: IIEE Council of Student Chapters</p>
 </section>
 
+<section class="about" id="verification" style="display:none;">
+
+  <div class="about-header">
+    <h2>MEMBERSHIP VERIFICATION</h2>
+  </div>
+
+  <p style="margin-top:10px; opacity:.8;">
+    Search your name or student number to verify your CSC membership record.
+  </p>
+
+  <div class="search-container">
+    <input
+      type="text"
+      id="liveSearch"
+      placeholder="Search Name or ID Number..."
+      oninput="liveSearchStudent()"
+      autocomplete="off"
+    />
+    <div id="suggestions" class="suggestions"></div>
+  </div>
+
+  <div id="searchResults"></div>
+
+</section>
+
 <footer>
   <div class="footer-icons">
 
@@ -994,6 +1126,128 @@ body.light-mode .navbar {
 </footer>
 
 <script>
+
+const SHEET_API =
+"https://script.google.com/macros/s/AKfycbw3PhrT633Z5shiPIOhwqNS2r5X4OwxVvjW1HZ1N9cPSJ47PrZaWX9LlFJLg39jD9rq/exec";
+
+function createCard(member){
+
+  return `
+    <div class="result-card">
+
+      <h3>${member.NAME}</h3>
+
+      <p><b>ID Number:</b> ${member["ID Number"]}</p>
+
+      <p><b>School:</b> ${member.School}</p>
+
+      <p><b>Region:</b> ${member.Region}</p>
+
+      <p><b>Sequence Number:</b> ${member["Sequence Number"]}</p>
+
+    </div>
+  `;
+}
+
+function displayMember(member){
+
+  document.getElementById("searchResults").innerHTML =
+    createCard(member);
+
+}
+
+function liveSearchStudent(){
+
+  const query =
+    document.getElementById("liveSearch")
+      .value
+      .toLowerCase()
+      .trim();
+
+  const results =
+    document.getElementById("searchResults");
+
+  const suggestions =
+    document.getElementById("suggestions");
+
+  if(!query){
+
+    results.innerHTML = "";
+    suggestions.innerHTML = "";
+    suggestions.style.display = "none";
+
+    return;
+  }
+
+  const filtered = members.filter(member => {
+
+    const name =
+      String(member.NAME || "")
+      .toLowerCase();
+
+    const id =
+      String(member["ID Number"] || "")
+      .toLowerCase();
+
+    return (
+      name.includes(query) ||
+      id.includes(query)
+    );
+
+  });
+
+  suggestions.innerHTML = "";
+
+  filtered.slice(0,5).forEach(member => {
+
+    const div = document.createElement("div");
+
+    div.innerHTML =
+      `${member.NAME} (${member["ID Number"]})`;
+
+    div.onclick = () => {
+
+      document.getElementById("liveSearch").value =
+        member.NAME;
+
+      displayMember(member);
+
+      suggestions.style.display = "none";
+    };
+
+    suggestions.appendChild(div);
+
+  });
+
+  suggestions.style.display =
+    filtered.length ? "block" : "none";
+
+  results.innerHTML = filtered
+    .map(member => createCard(member))
+    .join("");
+
+}
+
+let members = [];
+
+async function loadMembers() {
+
+  try {
+
+    const response = await fetch(SHEET_API);
+
+    members = await response.json();
+
+    console.log("Members Loaded:", members.length);
+
+  } catch(error) {
+
+    console.error("Failed to load sheet:", error);
+
+  }
+
+}
+
 function toggleMenu() {
   document.getElementById("navLinks").classList.toggle("show");
 }
@@ -1005,6 +1259,7 @@ function hideAll() {
   document.getElementById("membership").style.display = "none";
   document.getElementById("officers").style.display = "none";
   document.getElementById("contact").style.display = "none";
+  document.getElementById("verification").style.display = "none";
 }
 
 function showHome() {
@@ -1044,6 +1299,11 @@ function toggleTheme() {
   } else {
     icon.className = "fa-solid fa-sun";
   }
+}
+
+function showVerification() {
+  hideAll();
+  document.getElementById("verification").style.display = "block";
 }
 
 window.addEventListener("scroll", function() {
@@ -1533,9 +1793,6 @@ function openSchool(school, region) {
     "UNIVERSITY OF ST. LASALLE BACOLOD": "https://drive.google.com/file/d/1WR7GZqsBP7CDmbzjOmET6_1Qn7Bd4Hv4/view", 
     "WESTERN INSTITUTE OF TECHNOLOGY": "https://drive.google.com/file/d/1pvIFLJXIdFBX1_vn7SqD9AIWwtSdV_ZQ/view",
 
-
-
-
   }
 
   const link = driveLinks[school];
@@ -1557,5 +1814,6 @@ function openSchool(school, region) {
   `;
 }
 
+loadMembers();
 showHome();
 </script>
