@@ -512,6 +512,12 @@ body.light-mode .navbar.scrolled {
   touch-action: auto;
 }
 
+.pdf-container iframe {
+  width: 100%;
+  height: 80vh;
+  border: none;
+}
+
 body::before {
   content: "";
   position: fixed;
@@ -973,20 +979,11 @@ function openRegion(region, type) {
 
   /* ACCREDITED → DIRECT PDF */
   if (type === "accredited") {
-
-    let file = `${region}-accredited.pdf`;
-
-    document.getElementById("regionView").innerHTML = "";
-
-    document.getElementById("pdfViewer").innerHTML = `
-      <div class="pdf-container">
-        <iframe src="${file}#toolbar=1&zoom=page-width"></iframe>
-      </div>
-      <button class="glass-btn" onclick="loadRegions('${type}')"> Back</button>
-    `;
-
-    return;
-  }
+  document.getElementById("regionView").innerHTML = "";
+  document.getElementById("pdfViewer").innerHTML =
+    `<p>Accredited PDFs will be loaded here next step.</p>`;
+  return;
+}
 
   /* AFFILIATED → SHOW SCHOOLS */
   const affiliatedData = {
@@ -1040,24 +1037,67 @@ function openRegion(region, type) {
 }
 
 /* PDF VIEW */
-function loadPDF(file) {
+function loadDrivePDF(url) {
+  const fileId = extractDriveID(url);
+  if (!fileId) {
+    alert("Invalid Google Drive link");
+    return;
+  }
+
   document.getElementById("pdfViewer").innerHTML = `
     <div class="pdf-container">
-      <iframe src="${file}#toolbar=1&zoom=page-width"></iframe>
+      <iframe src="https://drive.google.com/file/d/${fileId}/preview"></iframe>
     </div>
   `;
+}
+
+/* Extract Google Drive File ID */
+function extractDriveID(url) {
+  const match = url.match(/\/d\/(.*?)\//);
+  return match ? match[1] : null;
 }
 
 function openSchool(school, region) {
 
   document.getElementById("regionView").innerHTML = "";
 
-  document.getElementById("pdfViewer").innerHTML = `
-    <div class="pdf-container">
-      <iframe src="${school}.pdf#toolbar=1&zoom=page-width"></iframe>
-    </div>
+  // Mapping
+  const driveLinks = {
+    "ABRA STATE INSTITUTE OF SCIENCE AND TECHNOLOGY": "https://drive.google.com/file/d/12TD_nIU-ocdZAyKjHBkOwJ5VEM9Nkj0z/view",
+    "ALDERSGATE COLLEGE INC.": "https://drive.google.com/file/d/1zg1tI0CVEXa6c0gTo3TrhLaCtgeWjOuj/view",
+    "CAGAYAN STATE UNIVERSITY (CARIG CAMPUS)": "https://drive.google.com/file/d/1ONQRAfsiwFdJg75U78OJ9nenT-GYpZAr/view",
+    "CAGAYAN STATE UNIVERSITY": "https://drive.google.com/file/d/1vTqpaUjGdSNXJIzd7uUaE7LM6beGfgXi/view",
+    "DIVINE WORLD COLLEGE OF LAOAG": "https://drive.google.com/file/d/1icf0V0MSBX_HOhJCeXKjqsn-pTjeaIXP/view", 
+    "DON MARIANO MARCOS STATE UNIVERSITY (MLUC)": "https://drive.google.com/file/d/1e463pBjDmT4Y3oupmG6cyvHrGeA6aYc5/view",
+    "IFUGAO STATE UNIVERSITY-LAGAWE CAMPUS": "https://drive.google.com/file/d/1kXgebeQx0pw9lXhdjB8T5z56hm0Twyod/view",
+    "ISABELA STATE UNIVERSITY (CITY OF ILAGAN CAMPUS)": "https://drive.google.com/file/d/1X-RNFBatZuqVLWE6UJzpdU5gnAZae93Y/view",
+    "KALINGA STATE UNIVERSITY": "https://drive.google.com/file/d/1U1jBlnJRUZNn3yo0J7QuH0vbTQruxf9q/view", 
+    "LA PATRIA COLLEGE":"https://drive.google.com/file/d/1Hrb4qfTtM3MSG8T6TkyjI6ivLmlGc1yr/view", 
+    "MARIANO MARCOS STATE UNIVERSITY":"https://drive.google.com/file/d/1xAGNVtZKzM6BRzv0z5RLKfVOKHWjc8OL/view",
+    "NUEVA VIZCAYA STATE UNIVERSITY": "https://drive.google.com/file/d/1v6fJLkPdyJUH0gmzJZcDH218HzgxP_-1/view",
+    "SAINT LOUIS UNIVERSITY-BAGUIO CITY": "https://drive.google.com/file/d/1B9iH-b7JbHNgvh1w6BuNWEmOHcd0pIMG/view",
+    "SAINT MARY'S UNIVERSITY":"https://drive.google.com/file/d/11JKbRjPwbgbw-1ANwO3tJlI6WOskIUNA/view",
+    "TESDA-ISAT":"https://drive.google.com/file/d/1azCDlSIrYtl4kvunUBiLt_rtQGjCpvJQ/view",
+    "UNIVERSITY OF SAINT LOUIS (TUGUEGARAO)":"https://drive.google.com/file/d/1NFo_L7kezPM1OabNCnkEKF4k2Ijfrnkc/view",
 
-    <button class="glass-btn" onclick="openRegion('${region}','affiliated')"> Back</button>
+  };
+
+  const link = driveLinks[school];
+
+  if (!link) {
+    document.getElementById("pdfViewer").innerHTML = `
+      <p>No PDF available for this school yet.</p>
+      <button class="glass-btn" onclick="openRegion('${region}','affiliated')">Back</button>
+    `;
+    return;
+  }
+
+  loadDrivePDF(link);
+
+  document.getElementById("pdfViewer").innerHTML += `
+    <button class="glass-btn" onclick="openRegion('${region}','affiliated')">
+      Back
+    </button>
   `;
 }
 
