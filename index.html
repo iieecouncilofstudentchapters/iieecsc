@@ -982,7 +982,7 @@ function openRegion(region, type) {
       <div class="pdf-container">
         <iframe src="${file}#toolbar=1&zoom=page-width"></iframe>
       </div>
-      <button class="glass-btn" onclick="loadRegions('${type}')">⬅ Back</button>
+      <button class="glass-btn" onclick="loadRegions('${type}')"> Back</button>
     `;
 
     return;
@@ -994,11 +994,21 @@ function openRegion(region, type) {
     "Northern Luzon": [
       "ABRA STATE INSTITUTE OF SCIENCE AND TECHNOLOGY",
       "ALDERSGATE COLLEGE INC.",
-      "UNIVERSITY OF SAINT LOUIS",
-      "ALDERSGATE COLLEGE INC.",
-      "DON MARIANO MARCOS STATE UNIVERSITY",
+      "CAGAYAN STATE UNIVERSITY (CARIG CAMPUS)",
       "CAGAYAN STATE UNIVERSITY",
-      "KALINGA STATE UNIVERSITY"
+      "DIVINE WORLD COLLEGE OF LAOAG",
+      "DON MARIANO MARCOS STATE UNIVERSITY (MLUC)",
+      "IFUGAO STATE UNIVERSITY-LAGAWE CAMPUS",
+      "ISABELA STATE UNIVERSITY (CITY OF ILAGAN CAMPUS)",
+      "KALINGA STATE UNIVERSITY",
+      "LA PATRIA COLLEGE",
+      "MARIANO MARCOS STATE UNIVERSITY",
+      "NUEVA VIZCAYA STATE UNIVERSITY",
+      "SAINT LOUIS UNIVERSITY- BAGUIO CITY",
+      "SAINT MARY'S UNIVERSITY",
+      "TESDA-ISAT",
+      "UNIVERSITY OF SAINT LOUIS (TUGUEGARAO)"
+
     ],
 
     "Central Luzon": [
@@ -1021,10 +1031,10 @@ function openRegion(region, type) {
   html = "";
 
   affiliatedData[region]?.forEach(school => {
-    html += `<button class="glass-btn" onclick="openSchool('${school}')">${school}</button>`;
+    html += `<button class="glass-btn" onclick="openSchool('${school}','${region}')">${school}</button>`;
   });
 
-  html += `<button class="glass-btn" onclick="loadRegions('${type}')">⬅ Back</button>`;
+  html += `<button class="glass-btn" onclick="loadRegions('${type}')"> Back</button>`;
 
   document.getElementById("regionView").innerHTML = html;
 }
@@ -1038,7 +1048,7 @@ function loadPDF(file) {
   `;
 }
 
-function openSchool(school) {
+function openSchool(school, region) {
 
   document.getElementById("regionView").innerHTML = "";
 
@@ -1047,7 +1057,7 @@ function openSchool(school) {
       <iframe src="${school}.pdf#toolbar=1&zoom=page-width"></iframe>
     </div>
 
-    <button class="glass-btn" onclick="showAffiliated()">⬅ Back</button>
+    <button class="glass-btn" onclick="openRegion('${region}','affiliated')"> Back</button>
   `;
 }
 
