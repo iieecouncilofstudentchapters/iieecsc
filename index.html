@@ -380,7 +380,7 @@ body.light-mode .glass-btn {
 /* ANNOUNCEMENT */
 .announcement {
   margin: 40px;
-  padding: 40px;
+  padding: 40px 20px;
   border-radius: 25px;
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(12px);
@@ -390,14 +390,346 @@ body.light-mode .glass-btn {
 }
 
 .announcement h2 {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
 }
 
-.announcement p {
-  max-width: 800px;
-  margin: auto;
-  opacity: 0.85;
+.announcement-carousel {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 20px;
+  touch-action: pan-y;
+}
+
+.announcement-track {
+  display: flex;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  width: max-content;
+}
+
+.announcement-card {
+  flex: 0 0 auto;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 22px;
+  margin-right: 12px;
+  background: rgba(15, 23, 42, 0.65);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+body.light-mode .announcement-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #111;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.post-header img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  object-fit: cover;
+}
+
+.post-author {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.post-date {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.post-caption {
+  font-size: 14px;
   line-height: 1.6;
+  opacity: 0.92;
+  white-space: pre-line;
+}
+
+.fb-embed-container {
+  width: 100%;
+  min-height: 180px;
+  overflow: hidden;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  background: rgba(15, 23, 42, 0.65);
+  color-scheme: light;
+}
+
+.fb-embed-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: min(600px, 100%);
+  margin: 0 auto;
+  background: #ffffff;
+}
+
+.fb-embed-container iframe {
+  display: block;
+  width: min(600px, 100%);
+  height: 760px;
+  border: 0;
+  position: relative;
+  z-index: 1;
+  color-scheme: light;
+}
+
+@media (max-width: 768px) {
+  .fb-embed-container iframe {
+    height: 900px;
+  }
+}
+
+.post-image-container {
+  position: relative;
+  width: 100%;
+  max-height: 380px;
+  overflow: hidden;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+}
+
+.post-image-container:hover .post-image {
+  transform: scale(1.03);
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  max-height: 380px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.image-overlay-hint {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  pointer-events: none;
+  opacity: 0.85;
+  backdrop-filter: blur(6px);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.post-image-container:hover .image-overlay-hint {
+  opacity: 1;
+  background: rgba(0, 198, 255, 0.9);
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.lightbox-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 10000;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+}
+
+.lightbox-modal.active {
+  display: flex;
+  animation: fadeIn 0.2s ease;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10001;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s ease;
+}
+
+.lightbox-close:hover {
+  background: rgba(255, 0, 76, 0.8);
+  transform: scale(1.1);
+}
+
+.lightbox-controls {
+  position: absolute;
+  bottom: 25px;
+  display: flex;
+  gap: 12px;
+  z-index: 10001;
+  background: rgba(15, 23, 42, 0.85);
+  padding: 8px 18px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.lightbox-controls button {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-controls button:hover {
+  background: #00c6ff;
+  color: #0f172a;
+}
+
+.lightbox-content-wrapper {
+  max-width: 90vw;
+  max-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.lightbox-content-wrapper img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  transition: transform 0.15s ease-out;
+  border-radius: 10px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+}
+
+.post-footer-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: #1877f2;
+  color: #ffffff !important;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  align-self: flex-start;
+  transition: transform 0.2s ease, background 0.2s ease;
+  box-shadow: 0 4px 12px rgba(24, 119, 242, 0.35);
+}
+
+.post-footer-btn:hover {
+  transform: translateY(-2px);
+  background: #166fe5;
+}
+
+.carousel-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  margin: 18px auto 0;
+  padding: 0 5px;
+}
+
+.carousel-btn {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s ease;
+  font-size: 16px;
+}
+
+body.light-mode .carousel-btn {
+  background: rgba(0,0,0,0.06);
+  color: #111;
+  border-color: rgba(0,0,0,0.15);
+}
+
+.carousel-btn:hover {
+  background: rgba(0, 198, 255, 0.4);
+  transform: scale(1.05);
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+body.light-mode .dot {
+  background: rgba(0,0,0,0.2);
+}
+
+.dot.active {
+  background: #00c6ff;
+  width: 24px;
+  border-radius: 10px;
 }
 
 /* LIGHT MODE ANNOUNCEMENT */
@@ -976,6 +1308,61 @@ body.light-mode .icon:hover {
   border-color: transparent;
 }
 
+/* FB POST SKELETON LOADER */
+.skeleton-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px;
+  animation: fbPulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.skeleton-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.skeleton-title {
+  height: 14px;
+  width: 60%;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+.skeleton-text {
+  height: 12px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+}
+
+.skeleton-media {
+  height: 220px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
+  gap: 8px;
+}
+
+@keyframes fbPulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.95; }
+  100% { opacity: 0.5; }
+}
+
 </style>
 </head>
 
@@ -1038,13 +1425,24 @@ body.light-mode .icon:hover {
 
 <section class="announcement" id="announcement">
   <h2>ANNOUNCEMENTS</h2>
-  <p>
-    The Institute of Integrated Electrical Engineers of the Philippines, Inc.– Council of Student Chapters
-    announces that the documents for the <b>10th Electrical Engineering and Technology Student Summit</b>
-    happening on <b>June 25–26, 2026</b> at the <b>Meralco Center, Pasig City</b> are now officially released.
-    All student chapters are advised to coordinate with their respective officers for the complete details,
-    requirements, and submission guidelines. Early preparation and participation are highly encouraged.
-  </p>
+
+  <!-- Facebook Post Style Carousel -->
+  <div class="announcement-carousel" id="announcementCarousel">
+    <div class="announcement-track" id="announcementTrack">
+      <!-- Dynamic Announcement Cards Rendered Here -->
+    </div>
+  </div>
+
+  <!-- Carousel Navigation Controls -->
+  <div class="carousel-nav">
+    <button class="carousel-btn" onclick="prevSlide()" aria-label="Previous Announcement">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <div class="carousel-dots" id="carouselDots"></div>
+    <button class="carousel-btn" onclick="nextSlide()" aria-label="Next Announcement">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+  </div>
 </section>
 
 <section class="about" id="about">
@@ -1102,8 +1500,8 @@ body.light-mode .icon:hover {
 </section>
 
 <section class="about" id="officers" style="display:none;">
-  <h2>BATCH 38 OFFICERS</h2>
-  <img src="ORGCHART.png" style="width:100%; max-width:900px; border-radius:20px;">
+  <h2>BATCH 39 OFFICERS</h2>
+  <img src="Logob39.png" style="width:100%; max-width:900px; border-radius:20px;">
 </section>
 
 <section class="about" id="contact" style="display:none;">
@@ -1137,6 +1535,19 @@ body.light-mode .icon:hover {
 
 </section>
 
+<div id="imageLightbox" class="lightbox-modal" onclick="if(event.target === this) closeLightbox()">
+  <div class="lightbox-close" onclick="closeLightbox()">&times;</div>
+  <div class="lightbox-content-wrapper" id="lightboxWrapper">
+    <img id="lightboxImg" src="" alt="Full Announcement Preview">
+  </div>
+  <div class="lightbox-controls">
+    <button onclick="zoomImage(1.25)" title="Zoom In"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+    <button onclick="zoomImage(0.8)" title="Zoom Out"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+    <button onclick="resetZoom()" title="Reset Zoom"><i class="fa-solid fa-rotate-left"></i></button>
+    <button onclick="closeLightbox()" title="Close"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+</div>
+
 <footer>
   <div class="footer-icons">
 
@@ -1165,6 +1576,236 @@ body.light-mode .icon:hover {
 
 const SHEET_API =
 "https://script.google.com/macros/s/AKfycbw3PhrT633Z5shiPIOhwqNS2r5X4OwxVvjW1HZ1N9cPSJ47PrZaWX9LlFJLg39jD9rq/exec";
+
+// Use the URL of an individual Facebook post, not the Facebook page URL.
+const announcementsData = [
+  "https://www.facebook.com/IIEECouncilofStudentChapters/posts/pfbid037PiPKvE8GmnS59PwzRxkc1S4bXFWe612DUq9bjKPPosuPGRuXMJr2aHTVJDvKotHl",
+  "https://www.facebook.com/IIEECouncilofStudentChapters/posts/pfbid02aMGzQjfdAuBrrn6uHk4QZcppsNaDmUsNSKBjuhLYSk1L692pw5F51SfSr23x3gGsl",
+  "https://www.facebook.com/IIEECouncilofStudentChapters/posts/pfbid02enaLJDpeQbxy3iqNrUYJRjXBPT4Sbhvt2vvLiWxu8pvEDYAS22qP1AtTu8PSkdwVl",
+  "https://www.facebook.com/IIEECouncilofStudentChapters/posts/pfbid0FVeXugHmkKbGTxSA6mgk3T7BVqjVLDYFZbQk67XUgP7uXX7dcUrqy5uutrcvF8s9l",
+  "https://www.facebook.com/IIEECouncilofStudentChapters/posts/pfbid02AnHyqwecmSpeA6ASZ9jsm488U4kawpWWeczJGGBQsATWzbPoAKDoQAM6ZLd5TVFrl",
+  "https://www.facebook.com/IIEECouncilofStudentChapters/posts/pfbid02SwKKk4v2255RN2NhCXr6nmBpLjucjp2M7poMwoYzFeK9SBqKQ7BW636z27TmKATwl",
+  "https://www.facebook.com/IIEECouncilofStudentChapters/posts/pfbid0VABivSQEvpnCpH6wYbUCdyJB4zHcfbXcwYWwaH2RbDtzjpgWfHHDWojzz2FL2cDsl",
+  "https://www.facebook.com/IIEECouncilofStudentChapters/posts/pfbid02LkLrTu6pUB3cHborKhhQ8TZNe72CFKtoPYf3haj5UNRncRQT4JfJeAkV9FdJwuzHl",
+  "https://www.facebook.com/IIEECouncilofStudentChapters/posts/pfbid023Q5dsHLJdX63oqzcA74b6uJnX7VCPwgJGQjpgk7NaT7reLRGVGKiTwUBhpVystcfl",
+  "https://www.facebook.com/IIEECouncilofStudentChapters/posts/pfbid0Y2QL7fU84rEHupxEuYndGEq4DztauCXECQBcSUhAFpXwxgW8DquqYq6viem8VoXal"
+
+];
+
+let currentSlide = 0;
+const fbCache = {};
+
+// Facebook controls access to post metadata, so render the official embed instead
+// of trying to scrape the post with a third-party metadata proxy.
+async function getFBPostDetails(item) {
+  const url = typeof item === "string" ? item : (item.fbLink || item.url);
+  if (!url) return { fbLink: "", embedUrl: "" };
+
+  if (fbCache[url]) return fbCache[url];
+
+  const details = {
+    author: "IIEE - Council of Student Chapters",
+    date: "Official Post",
+      fbLink: url,
+      embedUrl: `https://www.facebook.com/plugins/post.php?href=${encodeURIComponent(url)}&show_text=true&width=600&theme=light`
+  };
+  fbCache[url] = details;
+  return details;
+}
+
+async function renderAnnouncements() {
+  const track = document.getElementById("announcementTrack");
+  const dotsContainer = document.getElementById("carouselDots");
+  if (!track) return;
+
+  // 1. Initial Skeleton Render while fetching Facebook post details
+  track.innerHTML = announcementsData.map((_, idx) => `
+    <div class="announcement-card" id="card-slide-${idx}">
+      <div class="skeleton-card">
+        <div class="skeleton-header">
+          <div class="skeleton-avatar"></div>
+          <div class="skeleton-title"></div>
+        </div>
+        <div class="skeleton-text"></div>
+        <div class="skeleton-text" style="width: 80%;"></div>
+        <div class="skeleton-media">
+          <i class="fa-brands fa-facebook fa-spin"></i> Fetching Facebook Post Photo & Caption...
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+  if (dotsContainer) {
+    dotsContainer.innerHTML = announcementsData.map((_, index) => `
+      <span class="dot ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></span>
+    `).join("");
+  }
+
+  updateCarousel();
+
+  // 2. Render each post through Facebook's official embed endpoint.
+  for (let i = 0; i < announcementsData.length; i++) {
+    const rawItem = announcementsData[i];
+    const details = await getFBPostDetails(rawItem);
+    const cardEl = document.getElementById(`card-slide-${i}`);
+
+    if (cardEl) {
+      cardEl.innerHTML = `
+        <div class="post-header">
+          <img src="csc.png" alt="IIEE-CSC Logo" onerror="this.src='https://placehold.co/100x100/0f172a/00c6ff?text=CSC'">
+          <div>
+            <div class="post-author">${details.author || "IIEE - Council of Student Chapters"}</div>
+            <div class="post-date">${details.date || ""}</div>
+          </div>
+        </div>
+        <div class="fb-embed-container">
+          <iframe
+            src="${details.embedUrl}"
+            title="IIEEC-CSC Facebook announcement"
+            loading="lazy"
+            scrolling="no"
+            allow="encrypted-media">
+          </iframe>
+        </div>
+        ${details.fbLink ? `
+          <a href="${details.fbLink}" target="_blank" rel="noopener noreferrer" class="post-footer-btn">
+            <i class="fa-brands fa-facebook"></i> View on Facebook
+          </a>
+        ` : ''}
+      `;
+    }
+  }
+}
+
+let currentZoom = 1;
+
+function openLightbox(imgSrc) {
+  const modal = document.getElementById("imageLightbox");
+  const img = document.getElementById("lightboxImg");
+  if (!modal || !img) return;
+
+  const defaultFallback = "https://placehold.co/800x500/0f172a/00c6ff?text=IIEE-CSC+Official+Announcement";
+  
+  img.src = imgSrc;
+  img.onerror = function() {
+    this.onerror = null;
+    this.src = defaultFallback;
+  };
+
+  currentZoom = 1;
+  applyZoom();
+  modal.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function closeLightbox() {
+  const modal = document.getElementById("imageLightbox");
+  if (modal) {
+    modal.classList.remove("active");
+  }
+  document.body.style.overflow = "";
+}
+
+function zoomImage(factor) {
+  currentZoom *= factor;
+  if (currentZoom < 0.5) currentZoom = 0.5;
+  if (currentZoom > 4) currentZoom = 4;
+  applyZoom();
+}
+
+function resetZoom() {
+  currentZoom = 1;
+  applyZoom();
+}
+
+function applyZoom() {
+  const img = document.getElementById("lightboxImg");
+  if (img) {
+    img.style.transform = `scale(${currentZoom})`;
+  }
+}
+
+// Mouse wheel zoom support for Lightbox
+document.addEventListener("DOMContentLoaded", () => {
+  const wrapper = document.getElementById("lightboxWrapper");
+  if (wrapper) {
+    wrapper.addEventListener("wheel", (e) => {
+      if (document.getElementById("imageLightbox")?.classList.contains("active")) {
+        e.preventDefault();
+        if (e.deltaY < 0) {
+          zoomImage(1.15);
+        } else {
+          zoomImage(0.85);
+        }
+      }
+    }, { passive: false });
+  }
+});
+
+function updateCarousel() {
+  const track = document.getElementById("announcementTrack");
+  const carousel = document.getElementById("announcementCarousel");
+  if (!track) return;
+
+  if (carousel) {
+    const sidePeek = Math.min(48, Math.max(20, carousel.clientWidth * 0.03));
+    const cardWidth = carousel.clientWidth <= 768
+      ? carousel.clientWidth * 0.84
+      : carousel.clientWidth * 0.70;
+    const slideGap = 16;
+    const cards = track.querySelectorAll(".announcement-card");
+
+    cards.forEach(card => {
+      card.style.width = `${cardWidth}px`;
+    });
+
+    const slideStep = cardWidth + slideGap;
+    track.style.transform = `translateX(${sidePeek - (currentSlide * slideStep)}px)`;
+  }
+
+  const dots = document.querySelectorAll(".carousel-dots .dot");
+  dots.forEach((dot, idx) => {
+    dot.classList.toggle("active", idx === currentSlide);
+  });
+}
+
+window.addEventListener("resize", updateCarousel);
+
+function prevSlide() {
+  currentSlide = (currentSlide - 1 + announcementsData.length) % announcementsData.length;
+  updateCarousel();
+}
+
+function nextSlide() {
+  currentSlide = (currentSlide + 1) % announcementsData.length;
+  updateCarousel();
+}
+
+function goToSlide(index) {
+  currentSlide = index;
+  updateCarousel();
+}
+
+// Touch swipe support for mobile
+let touchStartX = 0;
+let touchEndX = 0;
+
+function initCarouselSwipe() {
+  const carousel = document.getElementById("announcementCarousel");
+  if (!carousel) return;
+
+  carousel.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  carousel.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    if (Math.abs(touchStartX - touchEndX) > 40) {
+      if (touchStartX - touchEndX > 0) nextSlide();
+      else prevSlide();
+    }
+  }, { passive: true });
+}
 
 function createCard(member){
 
@@ -1849,5 +2490,7 @@ function openSchool(school, region) {
 }
 
 loadMembers();
+renderAnnouncements();
+initCarouselSwipe();
 showHome();
 </script>
